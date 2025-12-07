@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DroneStore Admin Panel</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="sidebar-header">
+            <img src="images/main-logo.png" class="logo" alt="logo">
+        </div>
+
+        <div class="sidebar-menu">
+            <a href="#" class="active" data-tab="dashboard">Dashboard</a>
+            <a href="#" data-tab="products">Ürünler</a>
+            <a href="#" data-tab="orders">Siparişler</a>
+            <a href="#" data-tab="users">Kullanıcılar</a>
+            <a href="#" data-tab="announcements">Duyurular</a>
+        </div>
+
+    </div>
+
+    <div class="main">
+
+        <div id="dashboard" class="tab-content active">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card-box text-center">
+                        <h5>Toplam Ürün</h5>
+                        <h2 id="totalProducts">0</h2>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card-box text-center">
+                        <h5>Toplam Sipariş</h5>
+                        <h2 id="totalOrders">0</h2>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card-box text-center">
+                        <h5>Toplam Gelir</h5>
+                        <h2 id="totalRevenue">₺0</h2>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card-box text-center">
+                        <h5>Aktif Kullanıcı</h5>
+                        <h2 id="totalUsers">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="products" class="tab-content">
+            <div class="card-box">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Ürün Yönetimi</h4>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">+ Yeni Ürün</button>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ürün</th>
+                            <th>Kategori</th>
+                            <th>Fiyat</th>
+                            <th>Stok</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="orders" class="tab-content">
+            <div class="card-box">
+                <h4 class="mb-3">Sipariş Yönetimi</h4>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Müşteri</th>
+                            <th>Ürün</th>
+                            <th>Tutar</th>
+                            <th>Durum</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="users" class="tab-content">
+            <div class="card-box">
+                <h4 class="mb-3">Kullanıcı Yönetimi</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ad Soyad</th>
+                            <th>E-posta</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="announcements" class="tab-content">
+            <div class="card-box">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Duyurular</h4>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#announcementModal">+ Yeni Duyuru</button>
+                </div>
+
+                <ul id="announcementList" class="list-group"></ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="modal fade" id="productModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Yeni Ürün Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="pName" class="form-control mb-2" placeholder="Ürün Adı">
+                    <input id="pCat" class="form-control mb-2" placeholder="Kategori">
+                    <input id="pPrice" class="form-control mb-2" placeholder="Fiyat" type="number">
+                    <input id="pStock" class="form-control mb-2" placeholder="Stok" type="number">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="addProduct()">Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="orderModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Sipariş Düzenle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label>Durum</label>
+                    <select id="orderStatus" class="form-control mb-3">
+                        <option>Tamamlandı</option>
+                        <option>Hazırlanıyor</option>
+                        <option>Kargoda</option>
+                        <option>İptal Edildi</option>
+                    </select>
+
+                    <label>Tutar</label>
+                    <input id="orderAmount" type="number" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="saveOrder()">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="announcementModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Yeni Duyuru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="aTitle" class="form-control mb-2" placeholder="Başlık">
+                    <textarea id="aText" class="form-control" placeholder="Duyuru Metni"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="addAnnouncement()">Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let products = [
+            { id: 1, name: "DJI Mini 3", cat: "Drone", price: 8500, stock: 25 },
+            { id: 2, name: "Mavic 2 Zoom", cat: "Drone", price: 12300, stock: 15 }
+        ];
+
+        let orders = [
+            { id: 12345, customer: "Ahmet", product: "DJI Mini 3", amount: 8500, status: "Tamamlandı" },
+            { id: 12344, customer: "Ayşe", product: "Mavic 2 Zoom", amount: 12300, status: "Hazırlanıyor" }
+        ];
+
+        let users = [
+            { id: 1, name: "Ahmet Yılmaz", email: "ahmet@example.com", status: "Aktif" },
+            { id: 2, name: "Ayşe Demir", email: "ayse@example.com", status: "Aktif" }
+        ];
+
+        let announcements = [];
+
+        let editOrderIndex = -1;
+
+        document.querySelectorAll(".sidebar-menu a").forEach(link => {
+            link.addEventListener("click", function () {
+                document.querySelectorAll(".sidebar-menu a").forEach(a => a.classList.remove("active"));
+                this.classList.add("active");
+
+                const tab = this.getAttribute("data-tab");
+                document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+                document.getElementById(tab).classList.add("active");
+
+                updateDashboard();
+            });
+        });
+
+        function renderTables() {
+            document.getElementById("productsTable").innerHTML = products.map(p =>
+                `<tr><td>${p.id}</td><td>${p.name}</td><td>${p.cat}</td><td>₺${p.price}</td><td>${p.stock}</td></tr>`
+            ).join("");
+
+            document.getElementById("ordersTable").innerHTML = orders.map((o, i) =>
+                `<tr>
+                    <td>#${o.id}</td>
+                    <td>${o.customer}</td>
+                    <td>${o.product}</td>
+                    <td>₺${o.amount}</td>
+                    <td>${o.status}</td>
+                    <td><button class="btn btn-sm btn-warning" onclick="editOrder(${i})">Düzenle</button></td>
+                </tr>`
+            ).join("");
+
+            document.getElementById("usersTable").innerHTML = users.map(u =>
+                `<tr><td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td>${u.status}</td></tr>`
+            ).join("");
+
+            document.getElementById("announcementList").innerHTML = announcements.map(a =>
+                `<li class="list-group-item">
+                    <strong>${a.title}</strong><br>${a.text}
+                </li>`
+            ).join("");
+        }
+
+        function updateDashboard() {
+            document.getElementById("totalProducts").innerHTML = products.length;
+            document.getElementById("totalOrders").innerHTML = orders.length;
+            document.getElementById("totalUsers").innerHTML = users.length;
+
+            const total = orders.reduce((sum, o) => sum + Number(o.amount), 0);
+            document.getElementById("totalRevenue").innerHTML = "₺" + total;
+        }
+
+        function addProduct() {
+            const name = document.getElementById("pName").value;
+            const cat = document.getElementById("pCat").value;
+            const price = document.getElementById("pPrice").value;
+            const stock = document.getElementById("pStock").value;
+
+            products.push({
+                id: products.length + 1,
+                name,
+                cat,
+                price,
+                stock
+            });
+
+            renderTables();
+            updateDashboard();
+        }
+
+        function editOrder(index) {
+            editOrderIndex = index;
+
+            document.getElementById("orderStatus").value = orders[index].status;
+            document.getElementById("orderAmount").value = orders[index].amount;
+
+            new bootstrap.Modal(document.getElementById("orderModal")).show();
+        }
+
+        function saveOrder() {
+            const status = document.getElementById("orderStatus").value;
+            const amount = document.getElementById("orderAmount").value;
+
+            orders[editOrderIndex].status = status;
+            orders[editOrderIndex].amount = amount;
+
+            renderTables();
+            updateDashboard();
+        }
+        function addAnnouncement() {
+            const title = document.getElementById("aTitle").value;
+            const text = document.getElementById("aText").value;
+
+            announcements.push({ title, text });
+            renderTables();
+        }
+
+        renderTables();
+        updateDashboard();
+    </script>
+
+</body>
+</html>

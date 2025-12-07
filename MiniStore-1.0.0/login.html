@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - DroneStore</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="body-bg">
+    <div class="container d-flex align-items-center justify-content-center vh-100">
+        <div class="card shadow p-4" style="max-width:400px; width:100%;">
+
+            <div class="text-center mb-4">
+                <img src="images/main-logo.png" alt="logo" class="logo">
+            </div>
+
+            <h3 class="text-center mb-4">Giriş Yap</h3>
+
+            <div id="errorMsg" class="alert alert-danger" style="display:none;">
+                Kullanıcı adı veya şifre hatalı!
+            </div>
+
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Kullanıcı Adı</label>
+                    <input type="text" class="form-control" id="email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Şifre</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Giriş</button>
+
+                <p class="text-center mt-3">
+                    Hesabın yok mu? <a href="register.html">Kayıt ol</a>
+                </p>
+
+                <div class="text-center mt-2">
+                    <a href="index.html" class="btn btn-outline-secondary w-100">
+                        Ana Sayfaya Dön
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const dummyUser = {
+            email: "admin",
+            password: "1234"
+        };
+
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (email === dummyUser.email && password === dummyUser.password) {
+                window.location.href = "admin.html";
+            } else {
+                document.getElementById("errorMsg").style.display = "block";
+            }
+        });
+    </script>
+
+</body>
+</html>
