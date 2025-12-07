@@ -6,6 +6,7 @@
     <title>DroneStore Admin Panel</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 
 </head>
@@ -57,6 +58,15 @@
                     <div class="card-box text-center">
                         <h5>Aktif Kullanıcı</h5>
                         <h2 id="totalUsers">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card-box">
+                        <h4 class="mb-3">Yıllık Satış Grafiği</h4>
+                        <canvas id="revenueChart" style="width:100%; max-height:400px;"></canvas>
                     </div>
                 </div>
             </div>
@@ -318,6 +328,30 @@
 
         renderTables();
         updateDashboard();
+
+        const ctx = document.getElementById('revenueChart');
+
+        new Chart(ctx, {
+            type: 'bar', 
+            data: {
+                labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran'],
+                datasets: [{
+                    label: 'Aylık Ciro (₺)',
+                    data: [12500, 19000, 15000, 22000, 28000, 35000], 
+                    borderWidth: 1,
+                    backgroundColor: 'rgba(114, 174, 200, 0.7)', 
+                    borderColor: 'rgba(114, 174, 200, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     </script>
 
 </body>
